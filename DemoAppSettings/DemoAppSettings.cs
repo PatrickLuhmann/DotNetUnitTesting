@@ -31,9 +31,26 @@ namespace DemoAppSettings
 		private IUserSettings _user_config;
 		private bool RunInProgress = false;
 
+		private string currentChallenge;
+		public string CurrentChallenge
+		{
+			get
+			{
+				return currentChallenge;
+			}
+
+			set
+			{
+				currentChallenge = value;
+				_user_config.SetUserSetting("LastUsedChallenge", currentChallenge);
+			}
+		}
+
 		public AppSettings(IUserSettings UserConfig)
 		{
 			_user_config = UserConfig;
+
+			CurrentChallenge = (string)_user_config.GetUserSetting("LastUsedChallenge");
 		}
 
 		public void StartRun()

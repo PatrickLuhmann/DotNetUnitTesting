@@ -34,5 +34,17 @@ namespace DemoAppSettings.Properties {
                 this["RunCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastUsedChallenge {
+            get {
+                return ((string)(this["LastUsedChallenge"]));
+            }
+            set {
+                this["LastUsedChallenge"] = value;
+            }
+        }
     }
 }

@@ -65,5 +65,33 @@ namespace UnitTest_DemoAppSettings
 			Assert.AreEqual(-1, count);
 		}
 
+		[TestMethod]
+		public void LastUsedChallenge_Basic()
+		{
+			Mock<IUserSettings> mockSettings = new Mock<IUserSettings>();
+
+			// Tell Moq to return this specific value when that exact method is invoked.
+			// This is emulating the value in the user setting database before the
+			// class object is created.
+			mockSettings.Setup(us => us.GetUserSetting("LastUsedChallenge"))
+				.Returns("challenge 1");
+
+			AppSettings TestClass = new AppSettings(mockSettings.Object);
+
+			// Did the constructor read the user setting correctly?
+			Assert.AreEqual("challenge 1", TestClass.CurrentChallenge);
+
+			// Now try changing the setting. We will check for correct
+			// behavior afterwards.
+			TestClass.CurrentChallenge = "challenge 2";
+
+			// The verify must come after the test; it is not something you
+			// set up beforehand so that the framework will know to look for it.
+			mockSettings.Verify(us => us.SetUserSetting("LastUsedChallenge", "challenge 2"));
+			// Sanity check. This also verifies that the get accessor does not
+			// go to the settings database; in that case the mock will
+			// give it a different string (the old one).
+			Assert.AreEqual("challenge 2", TestClass.CurrentChallenge);
+		}
 	}
 }
